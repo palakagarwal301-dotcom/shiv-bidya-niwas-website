@@ -45,41 +45,28 @@ async def send_email_notification(inquiry_data: dict) -> bool:
         Received at: {inquiry_data['created_at']}
         """
         
-        # TODO: Implement actual email sending
-        # Option 1: SendGrid (Recommended)
-        # from sendgrid import SendGridAPIClient
-        # from sendgrid.helpers.mail import Mail
-        # 
-        # message = Mail(
-        #     from_email='noreply@shivbidyaniwas.com',
-        #     to_emails=recipient_email,
-        #     subject=subject,
-        #     plain_text_content=body
-        # )
-        # sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
-        # response = sg.send(message)
-        # return response.status_code == 202
+        # Yahoo SMTP Email Sending
+        import smtplib
+        from email.mime.text import MIMEText
+        from email.mime.multipart import MIMEMultipart
         
-        # Option 2: SMTP (Gmail, etc.)
-        # import smtplib
-        # from email.mime.text import MIMEText
-        # 
-        # msg = MIMEText(body)
-        # msg['Subject'] = subject
-        # msg['From'] = os.environ.get('SMTP_USER')
-        # msg['To'] = recipient_email
-        # 
-        # with smtplib.SMTP(os.environ.get('SMTP_HOST'), int(os.environ.get('SMTP_PORT', 587))) as server:
-        #     server.starttls()
-        #     server.login(os.environ.get('SMTP_USER'), os.environ.get('SMTP_PASSWORD'))
-        #     server.send_message(msg)
-        # return True
+        # Create email message
+        msg = MIMEMultipart()
+        msg['Subject'] = subject
+        msg['From'] = os.environ.get('SMTP_USER', 'annudeep_65@yahoo.co.in')
+        msg['To'] = recipient_email
+        msg.attach(MIMEText(body, 'plain'))
         
-        # For now, just log the email (no actual sending)
-        logger.info(f"Email notification prepared for {recipient_email}")
-        logger.info(f"Subject: {subject}")
-        logger.info(f"Body preview: {body[:100]}...")
+        # Send via Yahoo SMTP
+        with smtplib.SMTP('smtp.mail.yahoo.com', 587) as server:
+            server.starttls()
+            server.login(
+                os.environ.get('SMTP_USER', 'annudeep_65@yahoo.co.in'),
+                os.environ.get('SMTP_PASSWORD')
+            )
+            server.send_message(msg)
         
+        logger.info(f"Email sent successfully to {recipient_email}")
         return True
         
     except Exception as e:
