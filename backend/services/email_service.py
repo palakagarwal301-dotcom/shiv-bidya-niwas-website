@@ -25,7 +25,7 @@ async def send_email_notification(inquiry_data: dict) -> bool:
     
     try:
         # Email configuration
-        recipient_email = "annudeep_65@yahoo.co.in"
+        recipient_email = os.environ.get('ADMIN_EMAIL', 'annudeep_65@yahoo.co.in')
         subject = f"New Contact Inquiry from {inquiry_data['name']}"
         
         # Email body

@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Lock, Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
+import axios from 'axios';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -9,24 +13,28 @@ const AdminLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Simple password for admin access - In production, use proper authentication
-  const ADMIN_PASSWORD = 'admin123';
-
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    setTimeout(() => {
-      if (password === ADMIN_PASSWORD) {
+    try {
+      const response = await axios.post(`${API}/admin/login`, {
+        password: password
+      });
+
+      if (response.data.success) {
         localStorage.setItem('admin_logged_in', 'true');
+        localStorage.setItem('admin_token', response.data.token);
         toast.success('Login successful!');
         navigate('/admin/dashboard');
-      } else {
-        toast.error('Invalid password');
-        setPassword('');
       }
+    } catch (error) {
+      console.error('Login error:', error);
+      toast.error('Invalid password');
+      setPassword('');
+    } finally {
       setLoading(false);
-    }, 500);
+    }
   };
 
   return (

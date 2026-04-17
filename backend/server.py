@@ -10,6 +10,7 @@ from typing import List
 import uuid
 from datetime import datetime, timezone
 from routes.contacts import router as contacts_router
+from routes.admin import router as admin_router
 
 
 ROOT_DIR = Path(__file__).parent
@@ -69,6 +70,8 @@ async def get_status_checks():
 
 # Include contacts router
 api_router.include_router(contacts_router)
+# Include admin router
+api_router.include_router(admin_router)
 
 # Include the router in the main app
 app.include_router(api_router)
