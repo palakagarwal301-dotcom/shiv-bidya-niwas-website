@@ -12,7 +12,7 @@ function App() {
           <Route path="/" element={<Home />} />
         </Routes>
       </BrowserRouter>
-      <Toaster position="top-center" richColors />
+      <Toaster position="top-center" richColors expand={true} closeButton />
     </div>
   );
 }
