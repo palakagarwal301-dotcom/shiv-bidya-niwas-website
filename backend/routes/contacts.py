@@ -11,6 +11,7 @@ async def create_contact_inquiry(inquiry: ContactInquiryCreate):
     Create a new contact inquiry
     """
     from server import db
+    from services.email_service import send_email_notification
     
     try:
         # Create contact inquiry object
@@ -22,8 +23,8 @@ async def create_contact_inquiry(inquiry: ContactInquiryCreate):
         
         logger.info(f"New contact inquiry created: {inquiry_obj.id} from {inquiry_obj.email}")
         
-        # TODO: Send email notification to annudeep_65@yahoo.co.in
-        # This can be implemented with SendGrid, AWS SES, or SMTP
+        # Send email notification (async, don't wait for it)
+        await send_email_notification(inquiry_obj.dict())
         
         return inquiry_obj
         
