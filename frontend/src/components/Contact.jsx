@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { Mail, Phone, Clock, Globe, Send } from 'lucide-react';
 import { companyInfo, serviceOptions } from '../data/mock';
 import { toast } from 'sonner';
+import axios from 'axios';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +15,7 @@ const Contact = () => {
     service: '',
     message: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -19,7 +24,7 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     // Validation
@@ -28,17 +33,29 @@ const Contact = () => {
       return;
     }
 
-    // Mock submission
-    toast.success('Thank you! We will contact you within 24 hours.');
-    
-    // Reset form
-    setFormData({
-      name: '',
-      phone: '',
-      email: '',
-      service: '',
-      message: ''
-    });
+    setIsSubmitting(true);
+
+    try {
+      const response = await axios.post(`${API}/contacts`, formData);
+      
+      if (response.data) {
+        toast.success('Thank you! We will contact you within 24 hours.');
+        
+        // Reset form
+        setFormData({
+          name: '',
+          phone: '',
+          email: '',
+          service: '',
+          message: ''
+        });
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      toast.error('Failed to submit. Please try calling us directly.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -211,9 +228,10 @@ const Contact = () => {
 
               <button
                 type="submit"
-                className="w-full py-4 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-all duration-300 font-bold text-lg flex items-center justify-center space-x-2 shadow-lg shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/30"
+                disabled={isSubmitting}
+                className="w-full py-4 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-all duration-300 font-bold text-lg flex items-center justify-center space-x-2 shadow-lg shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <span>Send Free Consultation Request</span>
+                <span>{isSubmitting ? 'Sending...' : 'Send Free Consultation Request'}</span>
                 <Send className="w-5 h-5" />
               </button>
             </form>
