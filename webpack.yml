@@ -1,0 +1,8 @@
+# This is the updated webpack.yml workflow
+
+# Other configurations...
+  - name: Use Node.js
+    uses: actions/setup-node@v2
+    with:
+      node-version: '20.x'  # Updated Node.js version from 18.x to 20.x
+# Other configurations...
