@@ -12,7 +12,6 @@ from datetime import datetime, timezone
 from routes.contacts import router as contacts_router
 from routes.admin import router as admin_router
 
-
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
@@ -27,7 +26,6 @@ app = FastAPI()
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
 
-
 # Define Models
 class StatusCheck(BaseModel):
     model_config = ConfigDict(extra="ignore")  # Ignore MongoDB's _id field
@@ -38,6 +36,11 @@ class StatusCheck(BaseModel):
 
 class StatusCheckCreate(BaseModel):
     client_name: str
+
+# Health check endpoint for Render — must return 200
+@app.get("/health")
+async def health_check():
+    return {"status": "ok"}
 
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
