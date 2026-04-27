@@ -74,11 +74,16 @@ async def send_iepf_check_notification(check_data: dict) -> bool:
         body = f"""
         New IEPF Share Check Request Received:
         
-        PAN Number: {check_data['pan_number']}
+        Search Criteria:
+        PAN Number: {check_data.get('pan_number', 'Not provided')}
+        Folio Number: {check_data.get('folio_number', 'Not provided')}
         Full Name: {check_data['full_name']}
+        Company Name: {check_data.get('company_name', 'Not provided')}
+        City: {check_data.get('city', 'Not provided')}
+        
+        Contact Details:
         Email: {check_data['email']}
         Phone: {check_data['phone']}
-        Company Name: {check_data.get('company_name', 'Not provided')}
         
         Action Required:
         1. Login to admin dashboard: https://myiepfshares.in/admin/login

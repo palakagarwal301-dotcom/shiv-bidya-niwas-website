@@ -5,11 +5,15 @@ import uuid
 
 class IEPFCheck(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    pan_number: str
+    # Search criteria (at least one required)
+    pan_number: Optional[str] = None
+    folio_number: Optional[str] = None
     full_name: str
     email: EmailStr
     phone: str
     company_name: Optional[str] = None
+    city: Optional[str] = None
+    # Status tracking
     status: str = "pending"  # pending, checked, has_shares, no_shares
     notes: Optional[str] = None
     checked_by: Optional[str] = None
@@ -17,11 +21,13 @@ class IEPFCheck(BaseModel):
     updated_at: datetime = Field(default_factory=datetime.utcnow)
     
 class IEPFCheckCreate(BaseModel):
-    pan_number: str
+    pan_number: Optional[str] = None
+    folio_number: Optional[str] = None
     full_name: str
     email: EmailStr
     phone: str
     company_name: Optional[str] = None
+    city: Optional[str] = None
 
 class IEPFCheckUpdate(BaseModel):
     status: str
