@@ -11,6 +11,7 @@ import uuid
 from datetime import datetime, timezone
 from routes.contacts import router as contacts_router
 from routes.admin import router as admin_router
+from routes.iepf_checks import router as iepf_checks_router
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -75,6 +76,8 @@ async def get_status_checks():
 api_router.include_router(contacts_router)
 # Include admin router
 api_router.include_router(admin_router)
+# Include IEPF checks router
+api_router.include_router(iepf_checks_router)
 
 # Include the router in the main app
 app.include_router(api_router)

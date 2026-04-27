@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Search } from 'lucide-react';
 import Header from './Header';
 import { heroStats } from '../data/mock';
 
@@ -16,6 +16,10 @@ const Hero = () => {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  const goToIEPFChecker = () => {
+    window.location.href = '/iepf-checker';
   };
 
   return (
@@ -59,8 +63,16 @@ const Hero = () => {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
             <button
+              onClick={goToIEPFChecker}
+              className="group px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-lg hover:from-amber-600 hover:to-amber-700 transition-all duration-300 font-semibold text-lg flex items-center space-x-2 shadow-lg shadow-amber-500/30 hover:shadow-xl hover:shadow-amber-500/40 hover:-translate-y-0.5"
+            >
+              <Search className="w-5 h-5" />
+              <span>Check My Unclaimed Shares</span>
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </button>
+            <button
               onClick={scrollToContact}
-              className="group px-8 py-4 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-all duration-300 font-semibold text-lg flex items-center space-x-2 shadow-lg shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/30 hover:-translate-y-0.5"
+              className="group px-8 py-4 bg-white text-amber-600 border-2 border-amber-600 rounded-lg hover:bg-amber-50 transition-all duration-300 font-semibold text-lg flex items-center space-x-2"
             >
               <span>Start Your Recovery</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
