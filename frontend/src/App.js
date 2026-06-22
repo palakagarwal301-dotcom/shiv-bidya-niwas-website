@@ -6,6 +6,7 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import IEPFChecker from "./pages/IEPFChecker";
 import { Toaster } from "./components/ui/sonner";
+import { Analytics } from "@vercel/analytics/react";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         </Routes>
       </BrowserRouter>
       <Toaster position="top-center" richColors expand={true} closeButton />
+      <Analytics />
     </div>
   );
 }
